@@ -35,12 +35,15 @@ def gerar_pdf():
         output_pdf = fitz.open()
 
         for i in range(len(doc_conteudo)):
-            page_conteudo = doc_conteudo[i]
-            page_timbre = doc_timbre[i] if i < len(doc_timbre) else doc_timbre[0]
+            page_conteudo = doc_conteudo.load_page(i)
+
+            idx_timbre = i if i < len(doc_timbre) else 0
+            page_timbre = doc_timbre.load_page(idx_timbre)
 
             new_page = output_pdf.new_page(width=page_conteudo.rect.width, height=page_conteudo.rect.height)
+
             new_page.show_pdf_page(page_conteudo.rect, doc_conteudo, i)
-            new_page.show_pdf_page(page_timbre.rect, doc_timbre, i if i < len(doc_timbre) else 0)
+            new_page.show_pdf_page(page_timbre.rect, doc_timbre, idx_timbre)
 
         output_stream = io.BytesIO()
         output_pdf.save(output_stream)
@@ -50,3 +53,6 @@ def gerar_pdf():
 
     except Exception as e:
         return f"Erro ao processar: {str(e)}", 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
