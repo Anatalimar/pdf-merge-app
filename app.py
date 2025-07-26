@@ -36,14 +36,15 @@ def gerar_pdf():
 
         for i in range(len(doc_conteudo)):
             page_conteudo = doc_conteudo.load_page(i)
-
             idx_timbre = i if i < len(doc_timbre) else 0
             page_timbre = doc_timbre.load_page(idx_timbre)
 
             new_page = output_pdf.new_page(width=page_conteudo.rect.width, height=page_conteudo.rect.height)
 
-            new_page.show_pdf_page(page_conteudo.rect, doc_conteudo, i)
+            # TIMBRE POR BAIXO
             new_page.show_pdf_page(page_timbre.rect, doc_timbre, idx_timbre)
+            # CONTEÚDO POR CIMA
+            new_page.show_pdf_page(page_conteudo.rect, doc_conteudo, i)
 
         output_stream = io.BytesIO()
         output_pdf.save(output_stream)
