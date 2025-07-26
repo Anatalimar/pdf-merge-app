@@ -1,4 +1,4 @@
 Flask
 requests
 PyMuPDF
-gunicorn app:app
+gunicorn
